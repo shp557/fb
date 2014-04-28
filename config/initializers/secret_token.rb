@@ -9,4 +9,19 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
 Fb::Application.config.secret_key_base = 'cc7ff6d1856ffbb572ec0cdfe5d5020792422ab308f3757a1cbf744f349d10f31a83fc6fba158e12fdb1269be80ab3a7107898ee1f65410d946747d30dfe9ebe'
